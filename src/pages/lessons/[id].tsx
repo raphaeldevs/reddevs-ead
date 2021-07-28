@@ -1,28 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
-import Head from 'next/head'
+import Head from "next/head";
 
-import ReactPlayer from 'react-player/lazy'
+import ReactPlayer from "react-player/lazy";
 
-import { Flex, Image, Container } from '@chakra-ui/react'
+import { Flex } from "@chakra-ui/react";
 
-import { useRouter } from 'next/router'
-import { api } from '../../services/api'
+import { useRouter } from "next/router";
+import { api } from "../../services/api";
 
-export default function Lesson() {
-  const [url, setUrl] = useState('')
-  const router = useRouter()
-  const { id } = router.query
+export default function Lesson(): JSX.Element {
+  const [url, setUrl] = useState("");
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
-    ;(async () => {
-      const {
-        data: { url }
-      } = await api.get(`/lessons/${id}`)
+    (async () => {
+      if (!id) return;
 
-      setUrl(url)
-    })()
-  }, [id])
+      const {
+        data: { url },
+      } = await api.get(`/lessons/${id}`);
+
+      setUrl(url);
+    })();
+  }, [id]);
   return (
     <>
       <Head>
@@ -31,13 +33,9 @@ export default function Lesson() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Flex align="start" padding="4">
-        <Image alt="Logo da RED" src="/logo.svg" width={200} />
+      <Flex width="full" justifyContent="center">
+        <ReactPlayer url={url} controls />
       </Flex>
-
-      <Container>
-        <ReactPlayer url={url} />
-      </Container>
     </>
-  )
+  );
 }
