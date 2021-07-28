@@ -7,8 +7,6 @@ const baseURL = isDev
   ? `http://${VERCEL_URL}/api`
   : `https://${VERCEL_URL}/api`;
 
-console.log("__AXIOS BASE URL__", baseURL);
-
 export const api = axios.create({
   baseURL,
 });
