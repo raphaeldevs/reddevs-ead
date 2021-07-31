@@ -1,17 +1,30 @@
 import { extendTheme } from "@chakra-ui/react";
 
-const colors = {
-  brand: {
-    white: "#dcdcdc",
-    dark: "#9e1111",
-    light: "#c60f0f",
-    black: "#0f0f0f",
+export const theme = extendTheme({
+  colors: {
+    primary: "#9E1111",
+    secondary: "#C60F0F",
+    blue: "#187EF6",
+    dark: {
+      500: "#0F0F0F",
+      400: "#1F1F1F",
+      300: "#343434",
+    },
+    light: {
+      500: "#DCDCDC",
+      400: "#F2F2F2",
+    },
   },
-};
-
-const fonts = {
-  heading: "Roboto",
-  body: "Roboto",
-};
-
-export const theme = extendTheme({ colors, fonts });
+  fonts: {
+    heading: "Montserrat",
+    body: "Montserrat",
+  },
+  styles: {
+    global: {
+      body: {
+        bg: "dark.500",
+        color: "light.400",
+      },
+    },
+  },
+});
