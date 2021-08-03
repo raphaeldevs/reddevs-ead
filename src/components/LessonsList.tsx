@@ -27,7 +27,7 @@ export function LessonsList({
         overflowY="auto"
         backgroundColor="dark.400"
         borderRadius="1rem"
-        css={{
+        sx={{
           "&::-webkit-scrollbar": {
             width: "4px",
           },
@@ -35,7 +35,7 @@ export function LessonsList({
             width: "4px",
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "red",
+            background: "primary",
             borderRadius: "16px",
           },
         }}

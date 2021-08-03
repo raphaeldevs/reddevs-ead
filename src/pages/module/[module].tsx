@@ -47,7 +47,7 @@ const lessons = [
     description: "Iniciando projeto com NextJS 6",
   },
   {
-    id: "module-6",
+    id: "module-7",
     title: "Iniciando projeto com NextJS 7",
     url: "https://youtu.be/Pky_34RBSsk",
     description: "Iniciando projeto com NextJS 7",
