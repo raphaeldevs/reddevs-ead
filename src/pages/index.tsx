@@ -1,92 +1,81 @@
-import { useEffect, useState } from "react";
-
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import {
+  Button,
+  Container,
   Flex,
-  SimpleGrid,
   Heading,
-  Image,
   Icon,
-  Link as ChakraLink,
+  Image,
   Text,
 } from "@chakra-ui/react";
 
-import { SiGooglescholar } from "react-icons/si";
-import { api } from "../services/api";
+import { FcGoogle } from "react-icons/fc";
+import { Router, useRouter } from "next/dist/client/router";
 
-export type Lesson = {
-  id: string;
-  title: string;
-  description?: string;
-  url: string;
-  created_at: Date;
-};
+const isAuthenticated = false;
 
-export default function Lesson(): JSX.Element {
-  const [lessons, setLessons] = useState<Lesson[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const { data: lessons } = await api.get<Lesson[]>("/lessons");
-
-      setLessons(lessons);
-    })();
-  }, []);
-
-  function getLesssonId(url: string): string {
-    try {
-      const [id] = url.match(/([A-Z])\w+/g);
-
-      return id;
-    } catch (error) {
-      return "FJeS2yzSeyE";
-    }
-  }
-
+export default function SignIn(): JSX.Element {
+  const router = useRouter();
   return (
     <>
       <Head>
-        <title>RED Devs | EAD</title>
-        <meta name="description" content="A proof of concept of RED Devs EAD" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Home | RED Devs EAD</title>
       </Head>
 
-      <Flex padding="4" direction="column">
-        <Heading textTransform="uppercase" color="brand.light" display="flex">
-          <Icon as={SiGooglescholar} paddingRight="2" size="lg" /> Aulas
-        </Heading>
-
-        <SimpleGrid spacing="4" columns={2}>
-          {lessons.map((lesson) => (
-            <Flex key={lesson.id}>
-              <Image
-                alt="thumbnail da aula"
-                src={`https://img.youtube.com/vi/${getLesssonId(
-                  lesson.url
-                )}/maxresdefault.jpg`}
-                width={200}
-                marginRight="4"
-              />
-              <Flex direction="column">
-                <Heading
-                  textTransform="uppercase"
-                  color="brand.light"
-                  fontSize="lg"
-                >
-                  {lesson.title}
-                </Heading>
-                <Link href={`/lessons/${lesson.id}`} passHref>
-                  <ChakraLink marginTop="8">
-                    <Text fontWeight="bold">Assistir agora</Text>
-                  </ChakraLink>
-                </Link>
-              </Flex>
-            </Flex>
-          ))}
-        </SimpleGrid>
-      </Flex>
+      <Container
+        maxWidth={1280}
+        height="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Flex direction="column" flex="1" gridGap={12}>
+          <Image alt="Logo da RED" src="/logo.svg" width={400} />
+          <Heading as="h1" fontSize="3.5rem">
+            BEM-VINDO À <br /> NOSSA PLATAFORMA
+          </Heading>
+          <Button
+            leftIcon={<Icon as={FcGoogle} boxSize={9} />}
+            maxWidth={320}
+            justifyContent="space-between"
+            borderRadius="full"
+            padding={8}
+            px={10}
+            color="dark.500"
+            fontWeight="bold"
+            fontSize="1.3rem"
+            onClick={() => {
+              router.push("/courses");
+            }}
+          >
+            Entrar com Google
+          </Button>
+        </Flex>
+        <Flex direction="column" flex="1">
+          <Image
+            alt="Logo da RED"
+            src="/images/hero-signin.svg"
+            maxHeight={400}
+          />
+        </Flex>
+      </Container>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  if (isAuthenticated) {
+    return {
+      redirect: {
+        destination: "/courses",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
