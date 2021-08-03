@@ -1,8 +1,11 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
+
+import { Flex, Heading, Text } from "@chakra-ui/react";
+
 import ReactPlayer from "react-player/youtube";
-import { Header } from "../../components/Header";
-import { LessonsList } from "../../components/LessonsList";
+
+import { Header } from "components/Header";
+import { LessonsList } from "components/LessonsList";
 
 const lessons = [
   {

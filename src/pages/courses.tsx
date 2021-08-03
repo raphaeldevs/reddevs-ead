@@ -1,6 +1,7 @@
 import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
-import { Course } from "../components/Cards/Course";
-import { Header } from "../components/Header";
+
+import { Course } from "components/Cards/Course";
+import { Header } from "components/Header";
 
 const courses = [
   {

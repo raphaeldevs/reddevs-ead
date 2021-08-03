@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
 
 import {
@@ -8,11 +9,9 @@ import {
   Heading,
   Icon,
   Image,
-  Text,
 } from "@chakra-ui/react";
 
 import { FcGoogle } from "react-icons/fc";
-import { Router, useRouter } from "next/dist/client/router";
 
 const isAuthenticated = false;
 

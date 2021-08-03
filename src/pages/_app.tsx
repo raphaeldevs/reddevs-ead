@@ -3,7 +3,10 @@ import { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import { theme } from "../styles/theme";
+
+import { theme } from "styles/theme";
+
+// import "../services/firebase";
 
 const queryClient = new QueryClient();
 
