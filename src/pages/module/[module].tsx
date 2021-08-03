@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
@@ -6,6 +6,8 @@ import ReactPlayer from "react-player/youtube";
 
 import { Header } from "components/Header";
 import { LessonsList } from "components/LessonsList";
+import { useRouter } from "next/router";
+import { useAuth } from "contexts/AuthContext";
 
 const lessons = [
   {
@@ -53,7 +55,16 @@ const lessons = [
 ];
 
 export default function WatchLesson(): JSX.Element {
+  const router = useRouter();
+  const { user } = useAuth();
+
   const [currentLesson, setCurrentLesson] = useState(lessons?.[0]);
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>

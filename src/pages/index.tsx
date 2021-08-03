@@ -12,11 +12,21 @@ import {
 } from "@chakra-ui/react";
 
 import { FcGoogle } from "react-icons/fc";
+import { useAuth } from "contexts/AuthContext";
 
 const isAuthenticated = false;
 
 export default function SignIn(): JSX.Element {
   const router = useRouter();
+
+  const { signIn } = useAuth();
+
+  async function handleSignIn(): Promise<void> {
+    await signIn();
+
+    router.push("/courses");
+  }
+
   return (
     <>
       <Head>
@@ -45,9 +55,7 @@ export default function SignIn(): JSX.Element {
             color="dark.500"
             fontWeight="bold"
             fontSize="1.3rem"
-            onClick={() => {
-              router.push("/courses");
-            }}
+            onClick={handleSignIn}
           >
             Entrar com Google
           </Button>

@@ -15,7 +15,7 @@ export function Header(): JSX.Element {
       alignItems="center"
     >
       <Image alt="Logo da RED" src="/logo.svg" width={200} />
-      <Profile isAuthenticated />
+      <Profile />
     </Flex>
   );
 }

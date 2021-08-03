@@ -1,15 +1,34 @@
+import { useRouter } from "next/router";
+
 import { Avatar, Text, Icon, Button } from "@chakra-ui/react";
 
 import { FiX } from "react-icons/fi";
 import { FaGoogle } from "react-icons/fa";
+import { useAuth } from "contexts/AuthContext";
+import { useEffect } from "react";
 
-interface ProfileProps {
-  isAuthenticated: boolean;
-}
+export default function Profile(): JSX.Element {
+  const router = useRouter();
+  const { user, signIn, signOut } = useAuth();
 
-export default function Profile({
-  isAuthenticated = false,
-}: ProfileProps): JSX.Element {
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, []);
+
+  async function handleLoginButton(): Promise<void> {
+    if (user) {
+      await signOut();
+
+      router.push("/");
+
+      return;
+    }
+
+    await signIn();
+  }
+
   return (
     <Button
       maxHeight={12}
@@ -26,16 +45,12 @@ export default function Profile({
       _active={{
         backgroundColor: "dark.300",
       }}
-      onClick={
-        isAuthenticated
-          ? () => console.log("Sair [] =>")
-          : () => console.log("Login [] <=")
-      }
+      onClick={handleLoginButton}
     >
-      {isAuthenticated ? (
+      {user ? (
         <>
-          <Avatar size="sm" name="Diego Marcelo" src="/images/diego.jpeg" />
-          <Text fontWeight="medium">Diego Marcelo</Text>
+          <Avatar size="sm" name={user.name} src={user.avatar} />
+          <Text fontWeight="medium">{user.name}</Text>
           <Icon as={FiX} />
         </>
       ) : (
