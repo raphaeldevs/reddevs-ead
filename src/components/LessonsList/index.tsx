@@ -1,4 +1,5 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { Button } from "./Button";
 
 interface LessonsListProps {
   lessons: any;
@@ -45,29 +46,15 @@ export function LessonsList({
           return (
             <Button
               key={lesson.title}
-              minHeight={75}
-              whiteSpace="normal"
-              px={4}
-              backgroundColor={isActive ? "secondary" : "dark.300"}
-              borderRadius={0}
-              justifyContent="left"
-              cursor="pointer"
-              _hover={{
-                backgroundColor: "dark.500",
-              }}
-              _active={{
-                backgroundColor: "dark.400",
-              }}
               onClick={() => setCurrentLesson(lesson)}
+              title={
+                isActive
+                  ? "Você está assistindo essa aula"
+                  : `Assitir ${lesson.title}`
+              }
+              isActive={isActive}
             >
-              <Text
-                fontSize="1.25rem"
-                fontWeight="semibold"
-                color="gray.medium"
-                align="left"
-              >
-                {`${index + 1}. ${lesson.title}`}
-              </Text>
+              {`${index + 1}. ${lesson.title}`}
             </Button>
           );
         })}

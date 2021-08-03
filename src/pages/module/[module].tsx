@@ -87,9 +87,7 @@ export default function WatchLesson(): JSX.Element {
           <Heading mt={8} mb={4}>
             {currentLesson?.title}
           </Heading>
-          <Text size="md" paragraph>
-            {currentLesson?.description}
-          </Text>
+          <Text size="md">{currentLesson?.description}</Text>
         </Flex>
 
         <LessonsList
