@@ -2,6 +2,9 @@ import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 
 import { Course } from "components/Cards/Course";
 import { Header } from "components/Header";
+import { useAuth } from "contexts/AuthContext";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const courses = [
   {
@@ -31,13 +34,22 @@ const courses = [
 ];
 
 export default function Modules(): JSX.Element {
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, []);
+
   return (
     <>
       <Header />
 
       <Box px={20} my={16}>
         <Heading marginBottom={10}>
-          Olá, Diego! <br />
+          Olá, {user?.name}! <br />
           Veja nossos cursos
         </Heading>
 
