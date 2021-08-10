@@ -1,21 +1,14 @@
 import { useRouter } from "next/router";
 
 import { Avatar, Text, Icon, Button } from "@chakra-ui/react";
-
-import { FiX } from "react-icons/fi";
 import { FaGoogle } from "react-icons/fa";
-import { useAuth } from "contexts/AuthContext";
-import { useEffect } from "react";
+import { FiX } from "react-icons/fi";
+
+import { useAuth } from "~/contexts/AuthContext";
 
 export default function Profile(): JSX.Element {
   const router = useRouter();
   const { user, signIn, signOut } = useAuth();
-
-  useEffect(() => {
-    if (!user) {
-      router.push("/");
-    }
-  }, []);
 
   async function handleLoginButton(): Promise<void> {
     if (user) {

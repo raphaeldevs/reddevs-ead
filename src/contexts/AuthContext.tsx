@@ -1,4 +1,12 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+
+import { useRouter } from "next/router";
 
 import { firebase, auth } from "services/firebase";
 
@@ -21,7 +29,24 @@ type AuthProviderProps = {
 const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
+  const router = useRouter();
+
   const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const { displayName: name, email, photoURL: avatar } = user;
+
+        setUser({ name, email, avatar });
+      } else {
+        setUser(undefined);
+        router.push("/");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
 
   async function signIn(): Promise<void> {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -33,6 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
 
       setUser({ name, email, avatar });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Deu pau no servidor :(", error);
     }
   }
@@ -50,7 +76,5 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
 }
 
 export function useAuth(): AuthContextType {
-  const context = useContext(AuthContext);
-
-  return context;
+  return useContext(AuthContext);
 }

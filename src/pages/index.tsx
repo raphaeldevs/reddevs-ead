@@ -1,6 +1,7 @@
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import { useEffect } from "react";
+
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import {
   Button,
@@ -10,16 +11,20 @@ import {
   Icon,
   Image,
 } from "@chakra-ui/react";
-
 import { FcGoogle } from "react-icons/fc";
-import { useAuth } from "contexts/AuthContext";
 
-const isAuthenticated = false;
+import { useAuth } from "~/contexts/AuthContext";
 
 export default function SignIn(): JSX.Element {
   const router = useRouter();
 
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/courses");
+    }
+  }, [user, router]);
 
   async function handleSignIn(): Promise<void> {
     await signIn();
@@ -71,18 +76,3 @@ export default function SignIn(): JSX.Element {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  if (isAuthenticated) {
-    return {
-      redirect: {
-        destination: "/courses",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};

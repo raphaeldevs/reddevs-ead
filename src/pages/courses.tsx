@@ -1,47 +1,19 @@
-import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, Heading, SimpleGrid, Spinner } from "@chakra-ui/react";
+import { useQuery } from "react-query";
 
-import { Course } from "components/Cards/Course";
-import { Header } from "components/Header";
-import { useAuth } from "contexts/AuthContext";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-const courses = [
-  {
-    id: "09683305-81a7-4f98-ab69-d1ad26afec6a",
-    image: "https://img.icons8.com/color/452/visual-studio-code-2019.png",
-    name: "Conceitos da programação",
-    slug: "conceitos-da-programacao",
-  },
-  {
-    id: "9606ba32-b149-4f41-8537-1945cf4d17fe",
-    image: "https://img.icons8.com/color/452/visual-studio-code-2019.png",
-    name: "Aprendendo Java",
-    slug: "aprendendo-java",
-  },
-  {
-    id: "a630d88a-7653-4e16-94cf-1bb787a8e611",
-    image: "https://img.icons8.com/color/452/visual-studio-code-2019.png",
-    name: "Desenvolvendo seu primeiro aplicativo",
-    slug: "desenvolvendo-seu-primeiro-aplicativo",
-  },
-  {
-    id: "a630d88a-88-4e16-4e16-1bb787a8e6176531",
-    image: "https://img.icons8.com/color/452/visual-studio-code-2019.png",
-    name: "Aprendendo JavaScript",
-    slug: "aprendendo-javascript",
-  },
-];
+import { Course } from "~/components/Cards/Course";
+import { Header } from "~/components/Header";
+import { useAuth } from "~/contexts/AuthContext";
+import { api } from "~/services/api";
+import { Course as CourseType } from "~/types";
 
 export default function Modules(): JSX.Element {
-  const router = useRouter();
   const { user } = useAuth();
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/");
-    }
-  }, []);
+  const { data: courses, isLoading } = useQuery(
+    "courses",
+    async () => (await api.get("/courses")).data.Items as CourseType[]
+  );
 
   return (
     <>
@@ -49,25 +21,31 @@ export default function Modules(): JSX.Element {
 
       <Box px={20} my={16}>
         <Heading marginBottom={10}>
-          Olá, {user?.name}! <br />
+          Olá, {user?.name || "visitante"}! <br />
           Veja nossos cursos
         </Heading>
 
-        <SimpleGrid
-          minChildWidth={300}
-          spacing={8}
-          width="full"
-          justifyItems="space-between"
-        >
-          {courses?.map((course) => (
-            <Course
-              key={course.id}
-              image={course.image}
-              name={course.name}
-              slug={course.slug}
-            />
-          ))}
-        </SimpleGrid>
+        {isLoading ? (
+          <Flex padding="20" align="center" justify="center">
+            <Spinner size="xl" />
+          </Flex>
+        ) : (
+          <SimpleGrid
+            minChildWidth={300}
+            spacing={8}
+            width="full"
+            justifyItems="space-between"
+          >
+            {courses?.map((course) => (
+              <Course
+                key={course.id}
+                image={course.image}
+                name={course.name}
+                slug={course.slug}
+              />
+            ))}
+          </SimpleGrid>
+        )}
       </Box>
     </>
   );
